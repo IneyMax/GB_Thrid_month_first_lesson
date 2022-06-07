@@ -1,12 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "SSlateRoundButton.h"
+#include "SSlateRadioButtons.h"
 #include "SlateOptMacros.h"
 
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
-void SSlateRoundButton::Construct(const FArguments& InArgs)
+void SSlateRadioButtons::Construct(const FArguments& InArgs)
 {
 	OnRadioButtonChanged = InArgs._OnRadioButtonChanged;
 	CurrentChoice = ERadioChoice::Switch0;
@@ -27,13 +26,13 @@ void SSlateRoundButton::Construct(const FArguments& InArgs)
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 
-ECheckBoxState SSlateRoundButton::IsRadioButtonChecked(ERadioChoice RadioButtonID)
+ECheckBoxState SSlateRadioButtons::IsRadioButtonChecked(ERadioChoice RadioButtonID)
 {
 	return (CurrentChoice == RadioButtonID) ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
 }
 
 
-void SSlateRoundButton::HandleRadioButtonStateChanged(ECheckBoxState NewRadioState, ERadioChoice RadioButtonID)
+void SSlateRadioButtons::HandleRadioButtonStateChanged(ECheckBoxState NewRadioState, ERadioChoice RadioButtonID)
 {
 	if (NewRadioState == ECheckBoxState::Checked)
 	{
@@ -42,11 +41,11 @@ void SSlateRoundButton::HandleRadioButtonStateChanged(ECheckBoxState NewRadioSta
 	}
 }
 
-TSharedRef<SWidget> SSlateRoundButton::CreateRadioButton(const FString& RadioText, ERadioChoice RadioButtonChoice)
+TSharedRef<SWidget> SSlateRadioButtons::CreateRadioButton(const FString& RadioText, ERadioChoice RadioButtonChoice)
 {
 	return SNew(SCheckBox)
-	.IsChecked(MakeAttributeRaw(this, &SSlateRoundButton::IsRadioButtonChecked,RadioButtonChoice))
-	.OnCheckStateChanged(this, &SSlateRoundButton::HandleRadioButtonStateChanged,RadioButtonChoice)
+	.IsChecked(MakeAttributeRaw(this, &SSlateRadioButtons::IsRadioButtonChecked,RadioButtonChoice))
+	.OnCheckStateChanged(this, &SSlateRadioButtons::HandleRadioButtonStateChanged,RadioButtonChoice)
 	[
 		SNew(STextBlock)
 		.Text(FText::FromString(RadioText))

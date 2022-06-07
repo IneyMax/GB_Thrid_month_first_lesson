@@ -15,10 +15,10 @@ enum class ERadioChoice : uint8
 
 DECLARE_DELEGATE_OneParam(FOnRadioButtonChanged, ERadioChoice)
 
-class UI_API SSlateRoundButton : public SCompoundWidget
+class UI_API SSlateRadioButtons : public SCompoundWidget
 {
 public:
-	SLATE_BEGIN_ARGS(SSlateRoundButton)
+	SLATE_BEGIN_ARGS(SSlateRadioButtons)
 	{}
 	SLATE_EVENT(FOnRadioButtonChanged, OnRadioButtonChanged)
 	SLATE_END_ARGS()

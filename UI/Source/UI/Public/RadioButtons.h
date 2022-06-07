@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "SSlateRoundButton.h"
-#include "RoundButton.generated.h"
+#include "SSlateRadioButtons.h"
+#include "RadioButtons.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRadioButtonChangedEvent, ERadioChoice, NewRadioChoise);
 
 UCLASS()
-class UI_API URoundButton : public UWidget
+class UI_API URadioButtons : public UWidget
 {
 	GENERATED_BODY()
 
@@ -25,6 +25,6 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnRadioButtonChangedEvent OnRadioButtonChanged;
 protected:
-	TSharedPtr<SSlateRoundButton> MyRadioButton;
-	
+	TSharedPtr<SSlateRadioButtons> MyRadioButton;
 };
+
