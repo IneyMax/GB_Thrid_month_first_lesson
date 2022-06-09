@@ -5,18 +5,11 @@
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
 
-UENUM(BlueprintType)
-enum class ERadioChoice : uint8
-{
-	Switch0,
-	Switch1,
-	Switch2
-};
-
-DECLARE_DELEGATE_OneParam(FOnRadioButtonChanged, ERadioChoice)
+DECLARE_DELEGATE_OneParam(FOnRadioButtonChanged, int32)
 
 class UI_API SSlateRadioButtons : public SCompoundWidget
 {
+	
 public:
 	SLATE_BEGIN_ARGS(SSlateRadioButtons)
 	{}
@@ -24,13 +17,18 @@ public:
 	SLATE_END_ARGS()
 	
 	void Construct(const FArguments& InArgs);
-protected:
-	ERadioChoice CurrentChoice;
-	FOnRadioButtonChanged OnRadioButtonChanged;
-	uint8 NumberOfOptions {3};
+	void ChangeNumberOfOptions(int32 NumberOfOptions);
+	int32 GetNumberOfOptions();
 	
 protected:
-	ECheckBoxState IsRadioButtonChecked (ERadioChoice RadioButtonID);
-	void HandleRadioButtonStateChanged(ECheckBoxState NewRadioState, ERadioChoice RadioButtonID);
-	TSharedRef<SWidget> CreateRadioButton(const FString& RadioText, ERadioChoice RadioButtonChoice);
+	int32 SCurrentChoice {2};
+	TAttribute<int32> SNumberOfOptions {4};
+	
+	FOnRadioButtonChanged SOnRadioButtonChanged;
+	TSharedPtr<SVerticalBox> SMyDynamicVerticalBox;
+	
+protected:
+	ECheckBoxState SIsRadioButtonChecked (int32 RadioButtonID);
+	void SHandleRadioButtonStateChanged(ECheckBoxState NewRadioState, int32 RadioButtonID);
+	TSharedRef<SWidget> SCreateRadioButton(const FString& RadioText, int32 RadioButtonChoice);
 };
