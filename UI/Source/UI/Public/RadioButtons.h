@@ -33,7 +33,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Test")
 	int32 DefaultOptions;
 	
-protected:
+//protected:
 	TSharedPtr<SSlateRadioButtons> MyRadioButton;
 };
 

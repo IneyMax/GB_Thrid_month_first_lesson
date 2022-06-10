@@ -5,12 +5,12 @@
 
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
 void SSlateRadioButtons::Construct(const FArguments& InArgs)
 {
 	SOnRadioButtonChanged = InArgs._OnRadioButtonChanged;
-
-	FString s = "Construct Slate";
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *s);
+	SCurrentChoice.Set( InArgs._CurrentChoice );
+	SNumberOfOptions.Set( InArgs._NumberOfOptions );
 	
 	ChildSlot
 	[
@@ -26,32 +26,12 @@ void SSlateRadioButtons::Construct(const FArguments& InArgs)
 	}
 }
 
-void SSlateRadioButtons::ChangeNumberOfOptions(int32 NumberOfOptions)
-{
-	SNumberOfOptions.Set(NumberOfOptions);
-
-	SMyDynamicVerticalBox->ClearChildren();
-	
-	for (int i = 0; i < SNumberOfOptions.Get(); ++i)
-	{
-		SMyDynamicVerticalBox->AddSlot()
-		[
-			SCreateRadioButton("Options ", i)
-		];
-	}
-}
-
-int32 SSlateRadioButtons::GetNumberOfOptions()
-{
-	return SNumberOfOptions.Get();
-}
-
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 
 ECheckBoxState SSlateRadioButtons::SIsRadioButtonChecked(int32 RadioButtonID)
 {
-	return (SCurrentChoice == RadioButtonID) ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
+	return (SCurrentChoice.Get() == RadioButtonID) ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
 }
 
 
@@ -60,14 +40,14 @@ void SSlateRadioButtons::SHandleRadioButtonStateChanged(ECheckBoxState NewRadioS
 	if (NewRadioState == ECheckBoxState::Checked)
 	{
 		SCurrentChoice = RadioButtonID;
-		SOnRadioButtonChanged.ExecuteIfBound(RadioButtonID);
+		SOnRadioButtonChanged.ExecuteIfBound(RadioButtonID); // For UMG
 	}
 }
 
 TSharedRef<SWidget> SSlateRadioButtons::SCreateRadioButton(const FString& RadioText, int32 RadioButtonChoice)
 {
 	return SNew(SCheckBox)
-	.IsChecked(MakeAttributeRaw(this, &SSlateRadioButtons::SIsRadioButtonChecked,RadioButtonChoice))
+	.IsChecked(MakeAttributeRaw(this, &SSlateRadioButtons::SIsRadioButtonChecked, RadioButtonChoice))
 	.OnCheckStateChanged(this, &SSlateRadioButtons::SHandleRadioButtonStateChanged, RadioButtonChoice)
 	[
 		SNew(STextBlock)
